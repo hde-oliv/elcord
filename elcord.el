@@ -87,7 +87,12 @@ See <https://discordapp.com/developers/applications/me>."
                                     ("^sly-.*$" . "lisp-mode_icon")
                                     (typescript-mode . "typescript-mode_icon")
                                     (php-mode . "php-mode_icon")
-                                    (python-mode . "python-mode_icon"))
+                                    (python-mode . "python-mode_icon")
+                                    (sh-mode . "sh-mode_icon")
+                                    (tuareg-mode . "tuareg-mode_icon")
+                                    (yaml-mode . "yaml-mode_icon")
+                                    (json-mode . "json-mode_icon")
+                                    (dart-mode . "dart-mode_icon"))
   "Mapping alist of major modes to icon names to have elcord use.
 Note, these icon names must be available as 'small_image' in Discord."
   :type '(alist :key-type (choice (symbol :tag "Mode name")
