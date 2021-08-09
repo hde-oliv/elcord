@@ -63,6 +63,7 @@ See <https://discordapp.com/developers/applications/me>."
                                     (enh-ruby-mode . "ruby-mode_icon")
                                     (erc-mode . "irc-mode_icon")
                                     (forth-mode . "forth-mode_icon")
+                                    (elixir-mode . "elixir-mode_icon")
                                     (fsharp-mode . "fsharp-mode_icon")
                                     (gdscript-mode . "gdscript-mode_icon")
                                     (haskell-mode . "haskell-mode_icon")
