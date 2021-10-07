@@ -88,6 +88,7 @@ See <https://discordapp.com/developers/applications/me>."
                                     ("^slime-.*" . "lisp-mode_icon")
                                     ("^sly-.*$" . "lisp-mode_icon")
                                     (typescript-mode . "typescript-mode_icon")
+                                    (typescript-tsx-mode . "typescript-mode_icon")
                                     (php-mode . "php-mode_icon")
                                     (python-mode . "python-mode_icon")
                                     (sh-mode . "sh-mode_icon")
