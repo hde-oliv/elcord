@@ -35,12 +35,17 @@
   :prefix "elcord-"
   :group 'external)
 
+(defcustom elcord-windows 't
+  "Variable to use powershell pipe."
+  :type 'boolean
+  :group 'elcord)
+
 (defcustom elcord-client-id '"866387275919130624"
   "ID of elcord client (Application ID).
 See <https://discordapp.com/developers/applications/me>."
   :type '(choice (const :tag "'Native' Application ID" "866387275919130624")
-                 (string :tag "Use the specified ID")
-                 (function :tag "Call the function with no args to get the ID."))
+          (string :tag "Use the specified ID")
+          (function :tag "Call the function with no args to get the ID."))
   :group 'elcord)
 
 (defcustom elcord-refresh-rate 15
@@ -100,8 +105,8 @@ See <https://discordapp.com/developers/applications/me>."
 Note, these icon names must be available as 'small_image' in Discord."
   :type '(alist :key-type (choice (symbol :tag "Mode name")
                                   (regexp :tag "Regex"))
-                :value-type (choice (string :tag "Icon name")
-                                    (function :tag "Mapping function")))
+          :value-type (choice (string :tag "Icon name")
+                              (function :tag "Mapping function")))
   :group 'elcord)
 
 (defcustom elcord-mode-text-alist '((c-mode . "C  ")
@@ -123,8 +128,8 @@ Note, these icon names must be available as 'small_image' in Discord."
   "Mapping alist of major modes to text labels to have elcord use."
   :type '(alist :key-type (choice (symbol :tag "Mode name")
                                   (regexp :tag "Regex"))
-                :value-type (choice (string :tag "Text label")
-                                    (function :tag "Mapping function")))
+          :value-type (choice (string :tag "Text label")
+                              (function :tag "Mapping function")))
   :group 'elcord)
 
 (defcustom elcord-display-elapsed 't
@@ -167,12 +172,12 @@ Swap this with your own function if you want a custom buffer-details message."
 (defcustom elcord-editor-icon 'nil
   "Icon to use for the text editor. When nil, use the editor's native icon."
   :type '(choice (const :tag "Editor Default" nil)
-                 (const :tag "Emacs" "emacs_icon")
-                 (const :tag "Emacs (Pen)" "emacs_pen_icon")
-                 (const :tag "Emacs (Material)" "emacs_material_icon")
-                 (const :tag "Emacs (Legacy)" "emacs_legacy_icon")
-                 (const :tag "Spacemacs" "spacemacs_icon")
-                 (const :tag "Doom" "doom_icon"))
+          (const :tag "Emacs" "emacs_icon")
+          (const :tag "Emacs (Pen)" "emacs_pen_icon")
+          (const :tag "Emacs (Material)" "emacs_material_icon")
+          (const :tag "Emacs (Legacy)" "emacs_legacy_icon")
+          (const :tag "Spacemacs" "spacemacs_icon")
+          (const :tag "Doom" "doom_icon"))
   :group 'elcord)
 
 (defcustom elcord-boring-buffers-regexp-list '("^ "
@@ -266,8 +271,9 @@ Unused on other platforms.")
   (setq elcord--startup-time (string-to-number (format-time-string "%s" (current-time))))
   (unless (elcord--resolve-client-id)
     (warn "elcord: no elcord-client-id available"))
-  (when (eq system-type 'windows-nt)
-    (unless (executable-find "powershell")
+  (when elcord-windows
+    ;; (when (eq system-type 'windows-nt)
+    (unless (executable-find "powershell.exe")
       (warn "elcord: powershell not available"))
     (unless (file-exists-p elcord--stdpipe-path)
       (warn "elcord: 'stdpipe' script does not exist (%s)" elcord--stdpipe-path)))
