@@ -252,16 +252,14 @@ Unused on other platforms.")
         :filter 'elcord--connection-filter
         :noquery t))
       (t
-       (make-network-process
+       (make-process
         :name "*elcord-sock*"
-        :remote (expand-file-name
-                 elcord--discord-ipc-pipe
-                 (file-name-as-directory
-                  (or (getenv "XDG_RUNTIME_DIR")
-                      (getenv "TMPDIR")
-                      (getenv "TMP")
-                      (getenv "TEMP")
-                      "/tmp")))
+        :command (list
+                  "PowerShell"
+                  "-NoProfile"
+                  "-ExecutionPolicy" "Bypass"
+                  "-Command" elcord--stdpipe-path "." elcord--discord-ipc-pipe)
+        :connection-type 'pipe
         :sentinel 'elcord--connection-sentinel
         :filter 'elcord--connection-filter
         :noquery t)))))
