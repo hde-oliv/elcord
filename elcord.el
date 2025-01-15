@@ -35,11 +35,6 @@
   :prefix "elcord-"
   :group 'external)
 
-(defcustom elcord-windows 't
-  "Variable to use powershell pipe."
-  :type 'boolean
-  :group 'elcord)
-
 (defcustom elcord-client-id '"866387275919130624"
   "ID of elcord client (Application ID).
 See <https://discordapp.com/developers/applications/me>."
@@ -238,43 +233,27 @@ Unused on other platforms.")
 (defun elcord--make-process ()
   "Make the asynchronous process that communicates with Discord IPC."
   (let ((default-directory "~/"))
-    (cl-case system-type
-      (windows-nt
-       (make-process
-        :name "*elcord-sock*"
-        :command (list
-                  "PowerShell"
-                  "-NoProfile"
-                  "-ExecutionPolicy" "Bypass"
-                  "-Command" elcord--stdpipe-path "." elcord--discord-ipc-pipe)
-        :connection-type 'pipe
-        :sentinel 'elcord--connection-sentinel
-        :filter 'elcord--connection-filter
-        :noquery t))
-      (t
-       (make-process
-        :name "*elcord-sock*"
-        :command (list
-                  "PowerShell"
-                  "-NoProfile"
-                  "-ExecutionPolicy" "Bypass"
-                  "-Command" elcord--stdpipe-path "." elcord--discord-ipc-pipe)
-        :connection-type 'pipe
-        :sentinel 'elcord--connection-sentinel
-        :filter 'elcord--connection-filter
-        :noquery t)))))
+    (make-process
+     :name "*elcord-sock*"
+     :command (list
+               "PowerShell.exe"
+               "-NoProfile"
+               "-ExecutionPolicy" "Bypass"
+               "-Command" elcord--stdpipe-path "." elcord--discord-ipc-pipe)
+     :connection-type 'pipe
+     :sentinel 'elcord--connection-sentinel
+     :filter 'elcord--connection-filter
+     :noquery t)))
 
 (defun elcord--enable ()
   "Called when variable ‘elcord-mode’ is enabled."
   (setq elcord--startup-time (string-to-number (format-time-string "%s" (current-time))))
   (unless (elcord--resolve-client-id)
     (warn "elcord: no elcord-client-id available"))
-  (when elcord-windows
-    ;; (when (eq system-type 'windows-nt)
-    (unless (executable-find "powershell.exe")
-      (warn "elcord: powershell not available"))
-    (unless (file-exists-p elcord--stdpipe-path)
-      (warn "elcord: 'stdpipe' script does not exist (%s)" elcord--stdpipe-path)))
+  (unless (executable-find "powershell.exe")
+    (warn "elcord: powershell not available"))
+  (unless (file-exists-p elcord--stdpipe-path)
+    (warn "elcord: 'stdpipe' script does not exist (%s)" elcord--stdpipe-path))
 
   ;;Start trying to connect
   (elcord--start-reconnect))
